@@ -1,0 +1,22 @@
+{
+  "name": "eddn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "awaiting": "^3.0.0",
+    "bluebird": "^3.5.1",
+    "json-beautify": "^1.0.1",
+    "logger": "0.0.1",
+    "moment": "^2.19.4",
+    "mongodb-promise": "0.0.4",
+    "monk": "^6.0.5",
+    "zeromq": "^4.2.0",
+    "zlib": "^1.0.5"
+  }
+}
