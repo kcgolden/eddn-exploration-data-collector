@@ -1,0 +1,26 @@
+<service>
+	<id>eddnexplorationdatacollector.exe</id>
+	<name>EDDN Exploration Data Collector</name>
+	<description>Collects Body and Stellar Data</description>
+	<executable>C:\Program Files\nodejs\node.exe</executable>
+	<logmode>rotate</logmode>
+	<argument>--harmony</argument>
+	<argument>--max_old_space_size=4096</argument>
+	<argument>C:\Users\Kelsey\AppData\Roaming\nvm\v8.0.0\node_modules\node-windows\lib\wrapper.js</argument>
+	<argument>--file</argument>
+	<argument>C:\Users\Kelsey\Development\eddn_body_collector\index.js</argument>
+	<argument>--log</argument>
+	<argument>EDDN Exploration Data Collector wrapper</argument>
+	<argument>--grow</argument>
+	<argument>0.25</argument>
+	<argument>--wait</argument>
+	<argument>1</argument>
+	<argument>--maxrestarts</argument>
+	<argument>3</argument>
+	<argument>--abortonerror</argument>
+	<argument>n</argument>
+	<argument>--stopparentfirst</argument>
+	<argument>undefined</argument>
+	<stoptimeout>30sec</stoptimeout>
+	<workingdirectory>C:\USERS\Kelsey\Development\eddn_body_collector</workingdirectory>
+</service>
