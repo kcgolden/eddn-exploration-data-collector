@@ -5,8 +5,16 @@ const beautify = require('json-beautify');
 const moment = require('moment');
 const monk = require('monk');
 const Promise = require('bluebird');
-
+function log(logFunc, message) {
+    logFunc('[' + moment().format('L HH:mm:ss') + '] ' + message);
+}
+function handleUnhandled(unhandledError) {
+    log(console.error, unhandledError);
+    log(console.error, 'Exiting due to unhandled error');
+    process.exit(1);
+}
 function main() {
+    log(console.log, 'STARTUP');
     sock.connect('tcp://eddn.edcd.io:9500');
     sock.subscribe('');
     function insertRecord(data, collectionName) {
@@ -15,22 +23,14 @@ function main() {
         let message = data.message;
         message.schemaRef = data['$schemaRef'];
         message.softwareName = data.header.softwareName;
+        message.ScanTimestamp = data.header.gatewayTimestamp;
+        message.uploaderId = data.header.uploaderID;
         delete data['$schemaRef'];
-        collection.find({BodyName: message.BodyName, softwareName: message.softwareName})
-        .then((findings) => {
-            if(findings.length === 0) {
-                return collection.insert([message]);
-            } else {
-                Promise.resolve();
-            }
-        })
-        .then((docs) => {
+        collection.insert([message])
+        .catch(function(err) {
             dbConnection.close();
-        }).catch(function(err) {
-            try {
-                dbConnection.close();
-            } catch(err) {
-
+            if(err.code != 11000) {
+                handleUnhandled(err);
             }
         });
     }
@@ -46,9 +46,14 @@ function main() {
             insertRecord(message, 'stars');
         } else if (messageContent.BodyName) {
             insertRecord(message, 'bodies');
+        } else {
+            log(console.error, 'Encountered unknown message type: ' + beautify(message));
         }
       }
     });
 }
-
-main();
+try {
+    main();
+} catch(unhandledErr) {
+    handleUnhandled(unhandledErr);
+}
