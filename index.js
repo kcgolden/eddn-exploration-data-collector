@@ -27,6 +27,9 @@ function main() {
         message.uploaderId = data.header.uploaderID;
         delete data['$schemaRef'];
         collection.insert([message])
+        .then(() => {
+            dbConnection.close();
+        })
         .catch(function(err) {
             dbConnection.close();
             if(err.code != 11000) {
